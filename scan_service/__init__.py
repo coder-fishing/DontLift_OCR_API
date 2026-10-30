@@ -1,0 +1,1 @@
+"""Local receipt scanning API."""
