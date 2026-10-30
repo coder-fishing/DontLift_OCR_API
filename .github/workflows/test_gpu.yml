@@ -24,7 +24,7 @@ jobs:
     outputs:
       docs_only: ${{ steps.detect.outputs.docs_only }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - id: detect
@@ -35,10 +35,10 @@ jobs:
     needs: detect-changes
     if: needs.detect-changes.outputs.docs_only != 'true'
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ref: ${{ env.COMMIT_ID }}
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.10"
       - name: Build PaddleX wheel
@@ -51,7 +51,7 @@ jobs:
           PADDLEX_BRANCH="release/${PADDLEX_SERIES}"
           echo "Building PaddleX from branch: ${PADDLEX_BRANCH}"
           python -m pip wheel --no-deps --wheel-dir paddlex-wheel "paddlex@git+https://github.com/PaddlePaddle/PaddleX.git@${PADDLEX_BRANCH}"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: paddlex-wheel
           path: paddlex-wheel/*.whl
@@ -63,7 +63,7 @@ jobs:
     needs: [detect-changes, prepare-paddlex]
     if: needs.detect-changes.outputs.docs_only != 'true'
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: paddlex-wheel
           path: ${{ runner.temp }}/paddlex-wheel-${{ github.run_id }}-${{ github.run_attempt }}
